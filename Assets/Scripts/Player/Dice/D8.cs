@@ -6,11 +6,6 @@ public class D8 : PlayerBase
 {
     private bool inverted = false;
 
-    private void Start()
-    {
-        GetRigid().gravityScale = 8;
-    }
-
     void Update()
     {
         Move(GetRigid());
@@ -48,41 +43,35 @@ public class D8 : PlayerBase
 
     bool CheckIfGrounded()
     {
-        float groundDistance = GetComponent<PolygonCollider2D>().bounds.extents.y;
-        float xOffset = GetComponent<PolygonCollider2D>().bounds.extents.x;
-        RaycastHit2D rayHit;
-
-        if (!inverted)
+        int index = 0;
+        for (int i = 0; i < GetComponents<PolygonCollider2D>().Length; i++)
         {
-            rayHit = Physics2D.Raycast(new Vector2(transform.position.x - xOffset, transform.position.y), -Vector2.up, groundDistance + 0.05f, layerMask: _groundLayer.value);
-            if (rayHit.collider != null)
+            if (GetComponents<PolygonCollider2D>()[i].enabled == true)
             {
-                return true;
+                index = i;
             }
-            else
-            {
-                rayHit = Physics2D.Raycast(new Vector2(transform.position.x + xOffset, transform.position.y), -Vector2.up, groundDistance + 0.05f, layerMask: _groundLayer.value);
+        }
 
-                if (rayHit.collider != null)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
+        float groundDistance = GetComponents<PolygonCollider2D>()[index].bounds.extents.y;
+        float xOffset = GetComponents<PolygonCollider2D>()[index].bounds.extents.x;
+
+        RaycastHit2D rayHit = Physics2D.Raycast(new Vector2(transform.position.x - xOffset, transform.position.y), -Vector2.up, groundDistance + 0.05f, layerMask: _groundLayer.value);
+
+        if (rayHit.collider != null)
+        {
+            return true;
         }
         else
         {
-            rayHit = Physics2D.Raycast(new Vector2(transform.position.x - xOffset, transform.position.y), Vector2.up, groundDistance + 0.05f, layerMask: _groundLayer.value);
+            rayHit = Physics2D.Raycast(new Vector2(transform.position.x + xOffset, transform.position.y), -Vector2.up, groundDistance + 0.05f, layerMask: _groundLayer.value);
+
             if (rayHit.collider != null)
             {
                 return true;
             }
             else
             {
-                rayHit = Physics2D.Raycast(new Vector2(transform.position.x + xOffset, transform.position.y), Vector2.up, groundDistance + 0.05f, layerMask: _groundLayer.value);
+                rayHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), -Vector2.up, groundDistance + 0.05f, layerMask: _groundLayer.value);
 
                 if (rayHit.collider != null)
                 {

@@ -26,7 +26,7 @@ public class GlobalController : MonoBehaviour
     {
         if(GameObject.Find("Player").transform.position.y > _topBounds || GameObject.Find("Player").transform.position.y < _bottomBounds)
         {
-            SceneManager.GetSceneByName("DeathScreen");
+            SceneManager.LoadScene("DeathScreen");
         }
 
         if(coinCount >= 6)
@@ -73,5 +73,15 @@ public class GlobalController : MonoBehaviour
     {
         Debug.Log("Quit to desktop");
         Application.Quit();
+    }
+
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene("Level");
+    }
+
+    public void LoadCredits()
+    {
+        SceneManager.LoadScene("Credits");
     }
 }

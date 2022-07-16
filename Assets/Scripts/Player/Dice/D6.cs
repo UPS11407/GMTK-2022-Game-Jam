@@ -4,18 +4,15 @@ using UnityEngine;
 
 public class D6 : PlayerBase
 {
-    private void Start()
-    {
-        GetRigid().gravityScale = 7;
-    }
-
     void Update()
     {
         Move(GetRigid());
 
         if (CheckIfGrounded()) {
+            Debug.Log("check");
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space))
             {
+                Debug.Log("yump?");
                 yump(GetRigid());
             }
         }
@@ -23,8 +20,17 @@ public class D6 : PlayerBase
 
     bool CheckIfGrounded()
     {
-        float groundDistance = GetComponent<PolygonCollider2D>().bounds.extents.y;
-        float xOffset = GetComponent<PolygonCollider2D>().bounds.extents.x;
+        int index = 0;
+        for (int i = 0; i < GetComponents<PolygonCollider2D>().Length; i++)
+        {
+            if (GetComponents<PolygonCollider2D>()[i].enabled == true)
+            {
+                index = i;
+            }
+        }
+
+        float groundDistance = GetComponents<PolygonCollider2D>()[index].bounds.extents.y;
+        float xOffset = GetComponents<PolygonCollider2D>()[index].bounds.extents.x;
 
         RaycastHit2D rayHit = Physics2D.Raycast(new Vector2(transform.position.x - xOffset, transform.position.y), -Vector2.up, groundDistance + 0.05f, layerMask: _groundLayer.value);
 
@@ -42,7 +48,16 @@ public class D6 : PlayerBase
             }
             else
             {
-                return false;
+                rayHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), -Vector2.up, groundDistance + 0.05f, layerMask: _groundLayer.value);
+
+                if (rayHit.collider != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
     }
