@@ -8,6 +8,7 @@ public class GlobalController : MonoBehaviour
 {
     public Text _coinText;
     public GameObject _pauseMenu;
+    public GameObject _wall;
     
     public string _mainLevelScene;
     public float _topBounds;
@@ -25,7 +26,12 @@ public class GlobalController : MonoBehaviour
     {
         if(GameObject.Find("Player").transform.position.y > _topBounds || GameObject.Find("Player").transform.position.y < _bottomBounds)
         {
-            GameObject.Find("Player").GetComponent<PlayerBase>().ResetLevel(SceneManager.GetSceneByName(_mainLevelScene));
+            GameObject.Find("Player").GetComponent<PlayerBase>().ResetLevel(SceneManager.GetSceneByName("DeathScreen"));
+        }
+
+        if(coinCount >= 6)
+        {
+            Destroy(_wall);
         }
 
         _coinText.text = coinCount.ToString();

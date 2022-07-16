@@ -8,8 +8,7 @@ public class PlayerDice : MonoBehaviour
         D4,
         D6,
         D8,
-        D10,
-        D100
+        D10
     }
 
     public type _diceType = new type();
@@ -20,31 +19,53 @@ public class PlayerDice : MonoBehaviour
     void Start()
     {
         _renderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            SwitchDice();
+        }
+    }
+
+    void SwitchDice()
+    {
+        DisableAll();
 
         switch (_diceType)
         {
             case type.D4:
-                Debug.Log("D4");
-                GetComponent<D4>().enabled = true;
+                Debug.Log("Switching to D6");
+                GetComponent<D6>().enabled = true;
+                _diceType = type.D6;
                 break;
             case type.D6:
-                Debug.Log("D6");
-                GetComponent<D6>().enabled = true;
+                Debug.Log("Switching to D8");
+                GetComponent<D8>().enabled = true;
+                _diceType = type.D8;
                 break;
             case type.D8:
-                Debug.Log("D8");
-                GetComponent<D8>().enabled = true;
+                Debug.Log("Switching to D10");
+                GetComponent<D10>().enabled = true;
+                _diceType = type.D10;
                 break;
             case type.D10:
-                Debug.Log("D10");
-                GetComponent<D10>().enabled = true;
-                break;
-            case type.D100:
-                Debug.Log("D100");
+                Debug.Log("Switching to D4");
+                GetComponent<D4>().enabled = true;
+                _diceType = type.D4;
                 break;
             default:
-                Debug.LogError("No dice selected");
+                Debug.LogError("No dice selected during switch");
                 break;
         }
+    }
+
+    void DisableAll()
+    {
+        GetComponent<D4>().enabled = false;
+        GetComponent<D6>().enabled = false;
+        GetComponent<D8>().enabled = false;
+        GetComponent<D10>().enabled = false;
     }
 }
