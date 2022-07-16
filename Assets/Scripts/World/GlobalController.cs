@@ -7,10 +7,10 @@ using UnityEngine.SceneManagement;
 public class GlobalController : MonoBehaviour
 {
     public Text _coinText;
+    public Text _diceText;
     public GameObject _pauseMenu;
     public GameObject _wall;
     
-    public string _mainLevelScene;
     public float _topBounds;
     public float _bottomBounds;
 
@@ -26,7 +26,7 @@ public class GlobalController : MonoBehaviour
     {
         if(GameObject.Find("Player").transform.position.y > _topBounds || GameObject.Find("Player").transform.position.y < _bottomBounds)
         {
-            GameObject.Find("Player").GetComponent<PlayerBase>().ResetLevel(SceneManager.GetSceneByName("DeathScreen"));
+            SceneManager.GetSceneByName("DeathScreen");
         }
 
         if(coinCount >= 6)
@@ -34,6 +34,7 @@ public class GlobalController : MonoBehaviour
             Destroy(_wall);
         }
 
+        _diceText.text = $"Current Dice: {GameObject.Find("Player").GetComponent<PlayerDice>()._diceType}";
         _coinText.text = coinCount.ToString();
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -52,10 +53,25 @@ public class GlobalController : MonoBehaviour
     void PauseGame()
     {
         Time.timeScale = 0;
+        _pauseMenu.SetActive(true);
+        paused = true;
     }
 
-    void UnPauseGame()
+    public void UnPauseGame()
     {
         Time.timeScale = 1;
+        _pauseMenu.SetActive(false);
+        paused = false;
+    }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Quit to desktop");
+        Application.Quit();
     }
 }

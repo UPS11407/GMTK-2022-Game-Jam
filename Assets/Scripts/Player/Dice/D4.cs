@@ -8,7 +8,7 @@ public class D4 : PlayerBase
 
     void Start()
     {
-        GetRigid().gravityScale -= 3;
+        GetRigid().gravityScale = 7;
     }
 
     void Update()

@@ -20,7 +20,7 @@ public class LavaRaise : MonoBehaviour
     {
         if(collision.gameObject.layer == 6)
         {
-            collision.gameObject.GetComponent<PlayerBase>().ResetLevel(SceneManager.GetSceneByName(GameObject.Find("Controller").GetComponent<GlobalController>()._mainLevelScene));
+            SceneManager.LoadScene("DeathScreen");
         }
     }
 }

@@ -29,13 +29,13 @@ public class D10 : PlayerBase
         if (!small)
         {
             transform.localScale = transform.localScale / 2f;
-            GetRigid().gravityScale -= 4;
+            GetRigid().gravityScale = 6;
             small = true;
         }
         else
         {
             transform.localScale = transform.localScale * 2f;
-            GetRigid().gravityScale += 4;
+            GetRigid().gravityScale = 14;
             small = false;
         }
     }

@@ -19,6 +19,7 @@ public class PlayerDice : MonoBehaviour
     void Start()
     {
         _renderer = GetComponent<SpriteRenderer>();
+        SwitchDice();
     }
 
     private void Update()

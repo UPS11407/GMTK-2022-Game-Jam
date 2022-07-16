@@ -9,7 +9,7 @@ public class Flag : MonoBehaviour
     {
         if(collision.gameObject.layer == 6)
         {
-            SceneManager.LoadScene(SceneManager.GetSceneByName("WinScreen").buildIndex, LoadSceneMode.Single);
+            SceneManager.LoadScene("WinScreen");
         }
     }
 }
