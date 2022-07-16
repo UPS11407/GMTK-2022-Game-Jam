@@ -4,54 +4,95 @@ using UnityEngine;
 
 public class D8 : PlayerBase
 {
-    private bool small = false;
+    private bool inverted = false;
+
+    private void Start()
+    {
+        GetRigid().gravityScale = 8;
+    }
 
     void Update()
     {
         Move(GetRigid());
 
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            invert();
+        }
+
         if (CheckIfGrounded())
         {
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space))
             {
-                yump(GetRigid());
+                D8yump();
             }
-        }
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            shrink();
         }
     }
 
-    void shrink()
+    void invert()
     {
-        //get collider values or make an extra collider for the smaller version, not sure yet how to fully know which one is which.
-        if (!small)
+        GetRigid().gravityScale *= -1;
+    }
+
+    void D8yump()
+    {
+        if (inverted)
         {
-            transform.localScale = transform.localScale / 2f;
-            small = true;
+            GetRigid().velocity = new Vector2(0, -1) * _jumpForce;
         }
         else
         {
-            transform.localScale = transform.localScale * 2f;
-            small = false;
+            GetRigid().velocity = new Vector2(0, 1) * _jumpForce;
         }
     }
 
     bool CheckIfGrounded()
     {
         float groundDistance = GetComponent<PolygonCollider2D>().bounds.extents.y;
+        float xOffset = GetComponent<PolygonCollider2D>().bounds.extents.x;
+        RaycastHit2D rayHit;
 
-        RaycastHit2D rayHit = Physics2D.Raycast(transform.position, -Vector2.up, groundDistance + 0.05f, layerMask: _groundLayer.value);
-
-        if (rayHit.collider != null)
+        if (!inverted)
         {
-            return true;
+            rayHit = Physics2D.Raycast(new Vector2(transform.position.x - xOffset, transform.position.y), -Vector2.up, groundDistance + 0.05f, layerMask: _groundLayer.value);
+            if (rayHit.collider != null)
+            {
+                return true;
+            }
+            else
+            {
+                rayHit = Physics2D.Raycast(new Vector2(transform.position.x + xOffset, transform.position.y), -Vector2.up, groundDistance + 0.05f, layerMask: _groundLayer.value);
+
+                if (rayHit.collider != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
         else
         {
-            return false;
+            rayHit = Physics2D.Raycast(new Vector2(transform.position.x - xOffset, transform.position.y), Vector2.up, groundDistance + 0.05f, layerMask: _groundLayer.value);
+            if (rayHit.collider != null)
+            {
+                return true;
+            }
+            else
+            {
+                rayHit = Physics2D.Raycast(new Vector2(transform.position.x + xOffset, transform.position.y), Vector2.up, groundDistance + 0.05f, layerMask: _groundLayer.value);
+
+                if (rayHit.collider != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
     }
 }

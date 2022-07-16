@@ -9,7 +9,6 @@ public class PlayerDice : MonoBehaviour
         D6,
         D8,
         D10,
-        D20,
         D100
     }
 
@@ -38,9 +37,7 @@ public class PlayerDice : MonoBehaviour
                 break;
             case type.D10:
                 Debug.Log("D10");
-                break;
-            case type.D20:
-                Debug.Log("D20");
+                GetComponent<D10>().enabled = true;
                 break;
             case type.D100:
                 Debug.Log("D100");

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerBase : MonoBehaviour
 {
@@ -33,5 +34,10 @@ public class PlayerBase : MonoBehaviour
     public void yump(Rigidbody2D rigid)
     {
         rigid.velocity = new Vector2(0, 1) * _jumpForce;
+    }
+
+    public void ResetLevel(Scene _mainMenu)
+    {
+        SceneManager.LoadScene(_mainMenu.name, LoadSceneMode.Single);
     }
 }

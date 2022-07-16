@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class D6 : PlayerBase
 {
-    void Start()
+    private void Start()
     {
-        
+        GetRigid().gravityScale = 7;
     }
 
     void Update()
@@ -24,8 +24,9 @@ public class D6 : PlayerBase
     bool CheckIfGrounded()
     {
         float groundDistance = GetComponent<PolygonCollider2D>().bounds.extents.y;
+        float xOffset = GetComponent<PolygonCollider2D>().bounds.extents.x;
 
-        RaycastHit2D rayHit = Physics2D.Raycast(transform.position, -Vector2.up, groundDistance + 0.05f, layerMask: _groundLayer.value);
+        RaycastHit2D rayHit = Physics2D.Raycast(new Vector2(transform.position.x - xOffset, transform.position.y), -Vector2.up, groundDistance + 0.05f, layerMask: _groundLayer.value);
 
         if (rayHit.collider != null)
         {
@@ -33,7 +34,16 @@ public class D6 : PlayerBase
         }
         else
         {
-            return false;
+            rayHit = Physics2D.Raycast(new Vector2(transform.position.x + xOffset, transform.position.y), -Vector2.up, groundDistance + 0.05f, layerMask: _groundLayer.value);
+
+            if (rayHit.collider != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
