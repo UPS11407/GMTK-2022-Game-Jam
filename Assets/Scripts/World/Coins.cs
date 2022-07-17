@@ -16,8 +16,9 @@ public class Coins : MonoBehaviour
         if(collision.gameObject.layer == 6)
         {
             _controller.AddCoin(1);
+            GetComponent<AudioSource>().Play();
 
-            Destroy(gameObject);
+            Destroy(gameObject, 0.15f);
         }
     }
 }
